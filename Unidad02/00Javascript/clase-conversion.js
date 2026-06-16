@@ -18,7 +18,7 @@ console.log(typeof suma)
 
 const suma2 = 5 + true
 console.log(suma2)
-
+console.log(typeof suma2)
 
 const suma3 = 5 - true
 console.log(suma3)
