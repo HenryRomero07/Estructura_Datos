@@ -40,3 +40,14 @@ console.log("OR (||): ", esMayorDeEdad || tieneIdentificacion);
 
 // NOT (!) Invierte el valor booleano, si es true lo hace false, y viceversa
 console.log("NOT (!): ", !esMayorDeEdad); 
+
+
+
+const a = 10 
+const b = 20 
+const c = "30"
+
+console.log(a == b)
+console.log(a === b)
+console.log(a === c) 
+console.log(a == c)
