@@ -1,0 +1,124 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 5,
+  "metadata": {
+    "language_info": {
+      "name": "java"
+    }
+  },
+  "cells": [
+    {
+      "id": "84775d59-537a-4dc5-83b5-959e9d56fecc",
+      "cell_type": "markdown",
+      "source": "# Laboratorio07: Implementación de Algoritmos de Búsqueda (ABP)\n**Asignatura:** Estructuras de Datos\n**Grupo E:** Jeam Romero, Franz Ludeña, Alexander Gallo, Francisco Chamba \n**Fecha:** 19 Junio 2026  \n\n---\n\n## 1. Introducción y Contexto\nEl objetivo de esta actividad es implementar y analizar el comportamiento de dos algoritmos fundamentales de búsqueda: **Búsqueda Lineal** y **Búsqueda Binaria**, aplicados a un sistema de gestión y control de paquetes en un centro de operaciones.\n\n### Restricción Crítica:\nLa búsqueda binaria requiere estrictamente que la colección de datos se encuentre ordenada de forma ascendente según el identificador (`id`). Por lo tanto, se ha integrado un mecanismo de validación previo a la ejecución del algoritmo para asegurar su correcto funcionamiento y prevenir fallos en la lógica de negocio.",
+      "metadata": {
+        "language": "markdown",
+        "id": "84775d59-537a-4dc5-83b5-959e9d56fecc"
+      }
+    },
+    {
+      "id": "369d4005-2378-4a2a-a193-2f721dbae5eb",
+      "cell_type": "markdown",
+      "source": "## 2. Definición de Estructuras y Lógica de Búsqueda\nA continuación, se define la clase entidad `Paquete` y la clase controladora `CentroOperaciones`, la cual contiene las implementaciones de los métodos de búsqueda y la función auxiliar de validación de ordenamiento.",
+      "metadata": {
+        "language": "markdown",
+        "id": "369d4005-2378-4a2a-a193-2f721dbae5eb"
+      }
+    },
+    {
+      "id": "1b2ba8fc-e243-410b-acad-986b8351236a",
+      "cell_type": "code",
+      "source": "public class Paquete {\n    private int id;\n    \n    public Paquete(int id) { \n        this.id = id; \n    }\n    \n    public int getId() {\n        return id;\n    }\n}\nclass CentroOperaciones {\n    \n    public static int buscarLineal(Paquete[] lista, int id) {\n        for (int i = 0; i < lista.length; i++) {\n            if (lista[i].getId() == id) return i; \n        }\n        return -1;\n    }\n\n    private static boolean estaOrdenado(Paquete[] lista) {\n        for (int i = 0; i < lista.length - 1; i++) {\n            if (lista[i].getId() > lista[i + 1].getId()) { \n                return false;\n            }\n        }\n        return true;\n    }\n\n    public static int buscarBinario(Paquete[] lista, int id) {\n        if (!estaOrdenado(lista)) {\n            System.out.println(\"[ERROR]: El arreglo no está ordenado.\");\n            return -1; \n        }\n\n    int bajo = 0, alto = lista.length - 1;\n        while (bajo <= alto) {\n            int medio = bajo + (alto - bajo) / 2;\n            if (lista[medio].getId() == id) return medio; \n            if (lista[medio].getId() < id) bajo = medio + 1;    \n            else alto = medio - 1;\n        }\n    return -1;\n    }\n}",
+      "metadata": {
+        "language": "java",
+        "id": "1b2ba8fc-e243-410b-acad-986b8351236a",
+        "executionSummary": {
+          "executionOrder": 106,
+          "success": true
+        }
+      },
+      "execution_count": 106,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {},
+          "metadata": {},
+          "execution_count": 106
+        }
+      ]
+    },
+    {
+      "id": "2bf184fe-0780-4b38-bd82-d43eb340f6d1",
+      "cell_type": "markdown",
+      "source": "## 3. Evaluación y Casos de Prueba\nPara verificar que la validación solicitada funciona correctamente, simularemos dos escenarios en una clase de ejecución principal:\n1. **Caso Ordenado:** Un arreglo correcto donde la búsqueda binaria debe ejecutarse de forma normal.\n2. **Caso Desordenado:** Un arreglo donde la búsqueda binaria debería ser rechazada por la validación.\n",
+      "metadata": {
+        "language": "markdown",
+        "id": "2bf184fe-0780-4b38-bd82-d43eb340f6d1"
+      }
+    },
+    {
+      "id": "47b00ce8-543a-41fb-9a57-cc4bab9b52d3",
+      "cell_type": "code",
+      "source": "import java.util.Arrays;\nimport java.util.Random;\n\npublic class Main {\n    public static void main(String[] args) {\n        CentroOperaciones centro = new CentroOperaciones();\n        Paquete[] paquetes = new Paquete[10000];\n        Random rnd = new Random();\n\n        for (int i = 0; i < 10000; i++) {\n            paquetes[i] = new Paquete(rnd.nextInt(100000));\n        }\n\n        int idObjetivo = paquetes[9999].getId();\n\n        long inicioLineal = System.nanoTime();\n        centro.buscarLineal(paquetes, idObjetivo);\n        double tiempoLineal = (System.nanoTime() - inicioLineal) / 1e9; \n\n        long inicioOrden = System.nanoTime();\n        Arrays.sort(paquetes, (a, b) -> Integer.compare(a.getId(), b.getId()));\n        double tiempoOrden = (System.nanoTime() - inicioOrden) / 1e9;\n\n        long inicioBinaria = System.nanoTime();\n        centro.buscarBinario(paquetes, idObjetivo);\n        double tiempoBinaria = (System.nanoTime() - inicioBinaria) / 1e9;\n        \n        double tiempoTotalBinaria = tiempoOrden + tiempoBinaria;\n\n        System.out.println(\"Resultados obtenidos:\\n\");\n        System.out.println(\"Tiempo Lineal: \" + tiempoLineal + \" s\");\n        System.out.println(\"Tiempo Ordenamiento: \" + tiempoOrden  +\" s\");\n        System.out.println(\"Tiempo Binario puro: \" + tiempoBinaria + \" s\");\n        System.out.println(\"Tiempo Binario TOTAL (Orden + Búsqueda): \" + tiempoBinaria + \" s\");\n    }\n}\n\n// Ejecutar la simulación en el notebook\nMain.main(new String[0]);",
+      "metadata": {
+        "language": "java",
+        "executionSummary": {
+          "executionOrder": 104,
+          "success": true
+        }
+      },
+      "execution_count": 104,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": "Resultados obtenidos:\n\nTiempo Lineal: 7.04619E-4 s\nTiempo Ordenamiento: 0.006279536 s\nTiempo Binario puro: 0.001204136 s\nTiempo Binario TOTAL (Orden + Búsqueda): 0.001204136 s\n"
+          },
+          "metadata": {},
+          "execution_count": 104
+        }
+      ]
+    },
+    {
+      "id": "e2a4a16f-c935-442b-93a2-35424301f777",
+      "cell_type": "markdown",
+      "source": "## 1. Tabla Comparativa de Rendimiento en el caso ordenado\n\n| N. Paquetes | Búsqueda Lineal | Búsqueda Binaria |\n| :--- | :--- | :--- |\n| **Tiempo de Búsqueda** | 6.432E-6 s | 1.3595E-5 s |\n| **Tiempo de Ordenamiento previo** | No aplica | 0.011420216 s |\n| **Tiempo Total de Ejecución** | 6.432E-6  | 0.011433811 s|\n| **Complejidad Temporal** | $O(n)$ | $O(\\log n)$ |\n\n**Análisis de la Simulación:**\nComo puede verse en la tabla, el tiempo puro para la búsqueda binaria ($O(\\log n)$) es inferior al de la búsqueda lineal $O(n)$). No obstante, al tomar en consideración el tiempo total de ejecución, la búsqueda binaria se ve afectada por la necesidad de ordenar previamente, que utiliza casi todos los recursos durante esta operación.\n\n",
+      "metadata": {
+        "language": "markdown",
+        "id": "e2a4a16f-c935-442b-93a2-35424301f777"
+      }
+    },
+    {
+      "id": "0929d209-f8a1-4c87-ae4b-3ef3b9ea0066",
+      "cell_type": "code",
+      "source": "public class Main2 {\n    public static void main(String[] args) {\n        CentroOperaciones centro = new CentroOperaciones();\n        Paquete[] paquetes = new Paquete[10000];\n        java.util.Random rnd = new java.util.Random();\n\n        for (int i = 0; i < 10000; i++) {\n            paquetes[i] = new Paquete(rnd.nextInt(100000));\n        }\n\n        int idObjetivo = paquetes[9999].getId();\n\n        long inicioLineal = System.nanoTime();\n        centro.buscarLineal(paquetes, idObjetivo);\n        double tiempoLineal = (System.nanoTime() - inicioLineal) / 1e9; \n\n        long inicioBinaria = System.nanoTime();\n        int resultado = centro.buscarBinario(paquetes, idObjetivo);\n        double tiempoBinaria = (System.nanoTime() - inicioBinaria) / 1e9;\n\n        System.out.println(\"Resultados de la ejecucion:\");\n        System.out.println(\"Tiempo Lineal: \" + tiempoLineal + \" s\");\n        \n        if (resultado == -1) {\n            System.out.println(\"Tiempo Binario: Bloqueado por falta de ordenamiento\");\n        } else {\n            System.out.println(\"Tiempo Binario: \" + tiempoBinaria + \" s\");\n        }\n    }\n}\nMain2.main(new String[0]);",
+      "metadata": {
+        "language": "java",
+        "executionSummary": {
+          "executionOrder": 105,
+          "success": true
+        }
+      },
+      "execution_count": 105,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": "[ERROR]: El arreglo no está ordenado.\nResultados de la ejecucion:\nTiempo Lineal: 5.26074E-4 s\nTiempo Binario: Bloqueado por falta de ordenamiento\n"
+          },
+          "metadata": {},
+          "execution_count": 105
+        }
+      ]
+    },
+    {
+      "id": "cf10eb5e-3f60-46f9-a62c-9e24edeef983",
+      "cell_type": "markdown",
+      "source": "##  2. Tabla Comparativa de Rendimiento en el caso desordenado\n\n| Indicador | Búsqueda Lineal | Búsqueda Binaria |\n| :--- | :--- | :--- |\n| Tiempo de ejecución | 5.22E-6 s | N/A |\n| Estado de validación | Correcto | Bloqueado |\n| Observaciones | Ejecución estándar | Requisito de ordenamiento no cumplido |\n| Complejidad Temporal | O(n) | N/A |\n\n### Análisis de resultados\nPara comprobar que el algoritmo de búsqueda binaria sea completo, se ha excluido intencionalmente el proceso de ordenamiento anterior (Arrays.sort) en esta prueba. Por lo tanto:\n\n1. La inconsistencia en la estructura de datos fue identificada por el sistema de validación (función estaOrdenado).\n2. Se detuvo la ejecución para prevenir resultados incorrectos (falsos negativos).\n3. A diferencia de la búsqueda lineal, que no depende del orden en que se encuentran los elementos, la búsqueda binaria requiere una estructura ordenada para operar.",
+      "metadata": {
+        "language": "markdown",
+        "id": "cf10eb5e-3f60-46f9-a62c-9e24edeef983"
+      }
+    }
+  ]
+}
