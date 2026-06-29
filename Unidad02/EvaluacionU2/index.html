@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Pedidos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+
+    <!-- ─── SIDEBAR ──────────────────────────── -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">🍽</div>
+        <div>
+          <h1>ShamanBlack <small>Sistema de Gestión</small></h1>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Resumen</div>
+        <div class="stat-grid">
+          <div class="stat-item">
+            <span class="stat-label">Pendientes</span>
+            <span class="stat-value blue" id="totalPendientes">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Total Ventas</span>
+            <span class="stat-value green" id="totalVentas">S/ 0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Acciones</div>
+        <div class="sidebar-actions">
+          <button id="btnAtender" class="btn btn-success btn-block">
+            ⏭ Atender Siguiente
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ─── MAIN ─────────────────────────────── -->
+    <main class="main">
+
+      <!-- ─── CARD: NUEVO PEDIDO ─────────────── -->
+      <section class="card">
+        <div class="card-header">
+          <h2>📝 Nuevo Pedido</h2>
+          <span class="badge" id="contadorItems">0 items</span>
+        </div>
+        <div class="card-body">
+          <form id="formPedido">
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label for="inputCliente">Cliente</label>
+                <input id="inputCliente" type="text" placeholder="Nombre del cliente" list="listaClientes" required autocomplete="off">
+                <datalist id="listaClientes"></datalist>
+              </div>
+
+              <div class="item-row full-width">
+                <div class="form-group">
+                  <label for="inputPlatillo">Platillo</label>
+                  <input id="inputPlatillo" type="text" placeholder="Ej: Ceviche" autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <label for="inputPrecio">Precio (S/)</label>
+                  <input id="inputPrecio" type="number" step="0.10" placeholder="0.00">
+                </div>
+                <button type="button" id="btnAgregarItem" class="btn btn-secondary" style="margin-bottom:0">➕ Agregar</button>
+              </div>
+
+              <div id="previewLista" class="full-width"></div>
+
+              <button type="submit" id="btnRegistrar" class="btn btn-primary btn-block" disabled>
+                Registrar Pedido
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ─── CARD: PEDIDOS ACTIVOS ──────────── -->
+      <section class="card">
+        <div class="card-header">
+          <h2>📋 Pedidos Activos</h2>
+        </div>
+        <div class="card-body" style="padding:0">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Cliente</th>
+                  <th>Platillos</th>
+                  <th>Total</th>
+                  <th>Hora</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="cuerpoTabla">
+                <tr>
+                  <td colspan="6" class="empty-table">
+                    <span class="empty-icon">📭</span>
+                    No hay pedidos pendientes
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── CARD: TICKETS ──────────────────── -->
+      <section class="card">
+        <div class="card-header">
+          <h2>🧾 Tickets</h2>
+        </div>
+        <div class="card-body">
+          <pre id="contenedorTickets">Sin pedidos.</pre>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
