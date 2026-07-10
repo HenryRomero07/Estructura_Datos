@@ -57,17 +57,13 @@ class MotorAutocompletado {
     }
 }
 
+//Prueba
 const motor = new MotorAutocompletado();
 const diccionario = ["paquete_express", "postal_nacional", "prioritario", "estandar", "perecedero"];
 
-// Carga de términos
+// Carga de términos al Trie
 diccionario.forEach(termino => motor.insertarTermino(termino));
-console.log("Diccionario de paquetería cargado exitosamente.");
-
-// Opción A: Llamadas individuales
-console.log("Sugerencias para 'p':", motor.obtenerSugerencias("p"));
-console.log("Sugerencias para 'pa':", motor.obtenerSugerencias("pa"));
-console.log("Sugerencias para 'pos':", motor.obtenerSugerencias("pos"));
+console.log("Diccionario de paquetería cargado exitosamente en el Trie.");
 
 // Opción B: Simulación de entrada de usuario (Bucle iterativo)
 const prefijosPrueba = ["p", "pa", "pos", "e", "pe"];
@@ -76,36 +72,15 @@ prefijosPrueba.forEach(prefijo => {
     console.log(`Buscando '${prefijo}':`, motor.obtenerSugerencias(prefijo));
 });
 
-console.log("\n--- TAREA 3 ---");
-
-// Asegúrate de tener la clase MotorAutocompletado definida previamente
-const motor2 = new MotorAutocompletado();
-
-// Diccionario de términos logísticos para simulación
-const diccionario2 = [
-    "paquete_express", 
-    "postal_nacional", 
-    "prioritario", 
-    "estandar", 
-    "perecedero"
-];
-
-// Carga de términos al Trie
-diccionario2.forEach(termino => motor2.insertarTermino(termino));
-
-console.log("Diccionario de paquetería cargado exitosamente en el Trie.");
-
 console.log("\n--- Búsqueda Manual ---");
-console.log("Sugerencias para 'p':", motor2.obtenerSugerencias("p"));
-console.log("Sugerencias para 'pa':", motor2.obtenerSugerencias("pa"));
-console.log("Sugerencias para 'pos':", motor2.obtenerSugerencias("pos"));
-
-const prefijosPrueba2 = ["p", "pa", "pos", "e", "pe"];
+console.log("Sugerencias para 'p':", motor.obtenerSugerencias("p"));
+console.log("Sugerencias para 'pa':", motor.obtenerSugerencias("pa"));
+console.log("Sugerencias para 'pos':", motor.obtenerSugerencias("pos"));
 
 console.log("\n--- Simulación de Bucle de Búsqueda (Carga de Trabajo) ---");
-prefijosPrueba2.forEach(prefijo => {
+prefijosPrueba.forEach(prefijo => {
     console.time(`Tiempo_Busqueda_${prefijo}`); // Medición de latencia en ms
-    const resultados = motor2.obtenerSugerencias(prefijo);
+    const resultados = motor.obtenerSugerencias(prefijo);
     console.timeEnd(`Tiempo_Busqueda_${prefijo}`);
     console.log(` -> Sugerencias para '${prefijo}':`, resultados);
 });
