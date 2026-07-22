@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercises</title>
+</head>
+
+<body>
+
+
+    <script>
+        //Exercise 1
+        let number = prompt("ingrese un número aleatorio");
+        if (number > 90 && number < 110) {
+            alert("Bingo!");
+        } else {
+            alert("Pierde");
+        }
+
+        //Exercise 2
+        let number2 = prompt("ingrese un número aleatorio");
+        let message = (number2 > 90 && number2 < 110) ? "Bingo!" : "Pierde";
+        alert(message);
+
+
+        //Exercise 3
+        let firstNumber = Number(prompt("ingrese el primer número"));
+        let secondNumber = Number(prompt("ingrese el segundo número"));
+        let operand = prompt("ingrese el operando (+, -, * o /)");
+        let result;
+
+        if (!Number.isNaN(firstNumber) && !Number.isNaN(secondNumber)) {
+            switch (operand) {
+                case "+": result = firstNumber + secondNumber; break;
+                case "-": result = firstNumber - secondNumber; break;
+                case "*": result = firstNumber * secondNumber; break;
+                case "/": result = firstNumber / secondNumber; break;
+                default: result = "Error: unknown operand";
+            }
+        } else {
+            result = "Error: at least one of the entered values is not a number";
+        }
+        alert(result);
+
+    </script>
+
+</body>
+
+</html>
